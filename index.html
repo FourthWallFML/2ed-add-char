@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#3d2817" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>AD&D Kroniek</title>
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --leather-dark: #23170f;
+      --leather-mid: #3d2817;
+      --leather-light: #5c3d24;
+      --gold: #d4af37;
+      --gold-dim: #9e7e24;
+      --parchment-bg: #f3e5c8;
+      --parchment-card: #faf0da;
+      --parchment-border: #cbb389;
+      --ink-dark: #26180d;
+      --ink-muted: #5e4733;
+      --crimson: #8b1e1e;
+      --crimson-hover: #a82424;
+      --forest: #2e5a36;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      margin: 0;
+      padding: 0 0 82px 0;
+      font-family: 'Crimson Text', Georgia, serif;
+      font-size: 18px;
+      color: var(--ink-dark);
+      background-color: var(--parchment-bg);
+      background-image: 
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.4) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(160, 125, 75, 0.25) 0%, transparent 60%),
+        repeating-linear-gradient(45deg, rgba(139, 105, 55, 0.03) 0px, rgba(139, 105, 55, 0.03) 2px, transparent 2px, transparent 6px);
+      min-height: 100vh;
+    }
+
+    h1, h2, h3, .font-display {
+      font-family: 'Cinzel', serif;
+      margin: 0;
+      letter-spacing: 0.5px;
+    }
+
+    header {
+      background: linear-gradient(180deg, var(--leather-dark) 0%, var(--leather-mid) 100%);
+      color: var(--parchment-bg);
+      padding: 14px 16px;
+      border-bottom: 3px solid var(--gold);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.45);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    header h1 {
+      font-size: 1.25rem;
+      color: var(--gold);
+      text-shadow: 1px 1px 2px #000;
+    }
+
+    .header-sub {
+      font-size: 0.85rem;
+      color: #d6c3a5;
+      font-style: italic;
+    }
+
+    .btn-gold-outline {
+      background: rgba(0,0,0,0.3);
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      font-family: 'Cinzel', serif;
+      font-size: 0.75rem;
+      padding: 6px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    main {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 14px;
+    }
+
+    .tab-panel {
+      display: none;
+      animation: fadeIn 0.2s ease-in;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card {
+      background: var(--parchment-card);
+      border: 1px solid var(--parchment-border);
+      border-radius: 8px;
+      padding: 14px;
+      margin-bottom: 14px;
+      box-shadow: 0 2px 6px rgba(45, 25, 10, 0.12), inset 0 0 18px rgba(185, 145, 90, 0.15);
+      position: relative;
+    }
+
+    .card-title {
+      font-size: 1.05rem;
+      color: var(--crimson);
+      border-bottom: 1px solid var(--parchment-border);
+      padding-bottom: 6px;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      margin-bottom: 3px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      background: rgba(255, 252, 245, 0.85);
+      border: 1px solid #b59b72;
+      border-radius: 5px;
+      padding: 7px 9px;
+      font-family: 'Crimson Text', serif;
+      font-size: 1rem;
+      color: var(--ink-dark);
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--crimson);
+      background: #fff;
+    }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+
+    .btn {
+      background: linear-gradient(180deg, var(--leather-light) 0%, var(--leather-mid) 100%);
+      color: var(--parchment-bg);
+      border: 1px solid var(--gold-dim);
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-family: 'Cinzel', serif;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .btn:active { transform: scale(0.98); }
+
+    .btn-crimson {
+      background: linear-gradient(180deg, var(--crimson-hover) 0%, var(--crimson) 100%);
+      border-color: #541010;
+    }
+
+    .btn-small {
+      padding: 4px 9px;
+      font-size: 0.78rem;
+    }
+
+    .stat-box {
+      background: rgba(235, 218, 185, 0.55);
+      border: 1px solid var(--parchment-border);
+      border-radius: 6px;
+      padding: 8px 6px;
+      text-align: center;
+    }
+
+    .stat-box input {
+      text-align: center;
+      font-family: 'Cinzel', serif;
+      font-weight: 700;
+      font-size: 1.15rem;
+      padding: 4px;
+    }
+
+    .hp-bar-wrap {
+      background: #d8c7a8;
+      border: 1px solid #9c825c;
+      height: 16px;
+      border-radius: 8px;
+      overflow: hidden;
+      margin: 8px 0;
+    }
+
+    .hp-bar-fill {
+      background: linear-gradient(90deg, #6e1414, #a82424);
+      height: 100%;
+      transition: width 0.3s ease;
+    }
+
+    .xp-bar-fill {
+      background: linear-gradient(90deg, #244d2b, #3c7d47);
+      height: 100%;
+      transition: width 0.3s ease;
+    }
+
+    .list-item {
+      border-bottom: 1px dashed var(--parchment-border);
+      padding: 9px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .list-item:last-child { border-bottom: none; }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 7px;
+      font-size: 0.75rem;
+      border-radius: 4px;
+      font-weight: 700;
+      background: var(--leather-mid);
+      color: var(--gold);
+    }
+
+    .filter-row {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .filter-pill {
+      flex: 1;
+      padding: 6px;
+      border-radius: 6px;
+      border: 1px solid var(--parchment-border);
+      background: rgba(235, 218, 185, 0.5);
+      font-family: 'Cinzel', serif;
+      font-size: 0.75rem;
+      cursor: pointer;
+      color: var(--ink-dark);
+    }
+
+    .filter-pill.active {
+      background: var(--leather-mid);
+      color: var(--gold);
+      border-color: var(--gold);
+    }
+
+    .dice-result-box {
+      background: radial-gradient(circle, #fff8e7 0%, #e6d1a8 100%);
+      border: 2px solid var(--gold-dim);
+      border-radius: 10px;
+      padding: 16px;
+      text-align: center;
+      margin-bottom: 14px;
+    }
+
+    .dice-total {
+      font-family: 'Cinzel', serif;
+      font-size: 2.6rem;
+      font-weight: 800;
+      color: var(--crimson);
+      line-height: 1.1;
+    }
+
+    .dice-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    .dice-btn {
+      background: linear-gradient(180deg, #4a311d 0%, #2a1b0f 100%);
+      color: var(--gold);
+      border: 1px solid var(--gold);
+      border-radius: 8px;
+      padding: 12px 4px;
+      font-family: 'Cinzel', serif;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .dice-btn:active { background: var(--crimson); }
+
+    nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(0deg, var(--leather-dark) 0%, var(--leather-mid) 100%);
+      border-top: 2px solid var(--gold);
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      padding: 4px 2px;
+      z-index: 50;
+      box-shadow: 0 -3px 10px rgba(0,0,0,0.4);
+    }
+
+    .nav-btn {
+      background: none;
+      border: none;
+      color: #c2b094;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 2px;
+      font-family: 'Cinzel', serif;
+      font-size: 0.62rem;
+      cursor: pointer;
+      gap: 3px;
+    }
+
+    .nav-btn span.icon { font-size: 1.15rem; }
+
+    .nav-btn.active {
+      color: var(--gold);
+      font-weight: 700;
+      background: rgba(212, 175, 55, 0.12);
+      border-radius: 6px;
+    }
+
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 10, 5, 0.8);
+      z-index: 100;
+      padding: 16px;
+      overflow-y: auto;
+    }
+
+    .modal-backdrop.open { display: flex; align-items: center; justify-content: center; }
+
+    .modal-content {
+      background: var(--parchment-bg);
+      border: 2px solid var(--gold);
+      border-radius: 10px;
+      padding: 18px;
+      max-width: 500px;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div>
+      <h1 id="headerCharName">AD&D Kroniek</h1>
+      <div class="header-sub" id="headerCharSub">Avonturier • Niveau 1</div>
+    </div>
+    <button class="btn-gold-outline" onclick="toggleModal(true)">⚙ Data</button>
+  </header>
+
+  <main>
+    <!-- TAB 1: KARAKTERBLAD -->
+    <section id="tab-char" class="tab-panel active">
+      <div class="card">
+        <div class="card-title">
+          <span>Identiteit</span>
+          <span class="badge" id="charAlignmentBadge">Lawful Neutral</span>
+        </div>
+        <div class="grid-2" style="margin-bottom:8px;">
+          <div>
+            <label>Naam</label>
+            <input type="text" id="charName" oninput="saveCharField('name', this.value)" placeholder="Bijv. Berthramus Cormaeril" />
+          </div>
+          <div>
+            <label>Ras</label>
+            <input type="text" id="charRace" oninput="saveCharField('race', this.value)" placeholder="Human, Elf, Dwarf..." />
+          </div>
+        </div>
+        <div class="grid-3">
+          <div>
+            <label>Klasse</label>
+            <input type="text" id="charClass" oninput="saveCharField('charClass', this.value)" placeholder="Fighter, Mage..." />
+          </div>
+          <div>
+            <label>Niveau</label>
+            <input type="number" id="charLevel" oninput="saveCharField('level', Number(this.value))" />
+          </div>
+          <div>
+            <label>Alignment</label>
+            <select id="charAlignment" onchange="saveCharField('alignment', this.value)">
+              <option>Lawful Good</option>
+              <option>Neutral Good</option>
+              <option>Chaotic Good</option>
+              <option selected>Lawful Neutral</option>
+              <option>True Neutral</option>
+              <option>Chaotic Neutral</option>
+              <option>Lawful Evil</option>
+              <option>Neutral Evil</option>
+              <option>Chaotic Evil</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gevecht & HP -->
+      <div class="card">
+        <div class="card-title">
+          <span>Gevecht & Levenspunten</span>
+        </div>
+        <div class="grid-3" style="margin-bottom:10px;">
+          <div class="stat-box">
+            <label>Armor Class</label>
+            <input type="number" id="charAC" oninput="saveCharField('ac', Number(this.value))" />
+          </div>
+          <div class="stat-box">
+            <label>THAC0</label>
+            <input type="number" id="charThac0" oninput="saveCharField('thac0', Number(this.value))" />
+          </div>
+          <div class="stat-box">
+            <label>Movement</label>
+            <input type="text" id="charMove" oninput="saveCharField('move', this.value)" />
+          </div>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <label style="margin:0;">Hit Points (Huidig / Max)</label>
+          <div>
+            <button class="btn btn-small btn-crimson" onclick="adjustHP(-1)">-1</button>
+            <button class="btn btn-small" onclick="adjustHP(1)">+1</button>
+          </div>
+        </div>
+        <div class="hp-bar-wrap">
+          <div class="hp-bar-fill" id="hpBar" style="width:100%;"></div>
+        </div>
+        <div class="grid-2">
+          <div>
+            <input type="number" id="charHpCurr" oninput="saveCharField('hpCurr', Number(this.value))" />
+          </div>
+          <div>
+            <input type="number" id="charHpMax" oninput="saveCharField('hpMax', Number(this.value))" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Ability Scores -->
+      <div class="card">
+        <div class="card-title"><span>Ability Scores</span></div>
+        <div class="grid-3">
+          <div class="stat-box">
+            <label>STR (bijv. 18/51)</label>
+            <input type="text" id="statStr" oninput="saveStat('str', this.value)" />
+          </div>
+          <div class="stat-box">
+            <label>DEX</label>
+            <input type="number" id="statDex" oninput="saveStat('dex', this.value)" />
+          </div>
+          <div class="stat-box">
+            <label>CON</label>
+            <input type="number" id="statCon" oninput="saveStat('con', this.value)" />
+          </div>
+          <div class="stat-box">
+            <label>INT</label>
+            <input type="number" id="statInt" oninput="saveStat('int', this.value)" />
+          </div>
+          <div class="stat-box">
+            <label>WIS</label>
+            <input type="number" id="statWis" oninput="saveStat('wis', this.value)" />
+          </div>
+          <div class="stat-box">
+            <label>CHA</label>
+            <input type="number" id="statCha" oninput="saveStat('cha', this.value)" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Saving Throws -->
+      <div class="card">
+        <div class="card-title"><span>Saving Throws</span></div>
+        <div class="grid-5">
+          <div class="stat-box">
+            <label title="Paralyzation, Poison, Death Magic">PPD</label>
+            <input type="number" id="savePpd" oninput="saveThrow('ppd', this.value)" />
+          </div>
+          <div class="stat-box">
+            <label title="Rod, Staff, Wand">RSW</label>
+            <input type="number" id="saveRsw" oninput="saveThrow('rsw', this.value)" />
+          </div>
+          <div class="stat-box">
+            <label title="Petrification, Polymorph">PP</label>
+            <input type="number" id="savePp" oninput="saveThrow('pp', this.value)" />
+          </div>
+          <div class="stat-box">
+            <label title="Breath Weapon">BW</label>
+            <input type="number" id="saveBw" oninput="saveThrow('bw', this.value)" />
+          </div>
+          <div class="stat-box">
+            <label title="Spell">SPL</label>
+            <input type="number" id="saveSpl" oninput="saveThrow('spl', this.value)" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Notities & Spreuken -->
+      <div class="card">
+        <div class="card-title"><span>Vaardigheden, Talen & Spreuken</span></div>
+        <textarea id="charNotes" rows="4" oninput="saveCharField('notes', this.value)" placeholder="Weapon proficiencies, thief skills, spreuken..."></textarea>
+      </div>
+    </section>
+
+    <!-- TAB 2: XP & LEVEL UP -->
+    <section id="tab-xp" class="tab-panel">
+      <div class="card">
+        <div class="card-title">
+          <span>Ervaring (XP)</span>
+          <span class="badge" id="xpLevelDisplay">Niveau 1</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; font-weight:bold;">
+          <span id="xpCurrentText">0 XP</span>
+          <span id="xpNextText">Volgend: 2000 XP</span>
+        </div>
+        <div class="hp-bar-wrap">
+          <div class="xp-bar-fill" id="xpBar" style="width:0%;"></div>
+        </div>
+
+        <div class="grid-2" style="margin-top:10px;">
+          <div>
+            <label>Huidige XP</label>
+            <input type="number" id="xpCurrentInput" oninput="setXP(Number(this.value))" />
+          </div>
+          <div>
+            <label>XP nodig voor Level Up</label>
+            <input type="number" id="xpNextInput" oninput="setNextXP(Number(this.value))" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Level Up Paneel -->
+      <div class="card" id="levelUpCard" style="border: 2px solid var(--gold);">
+        <div class="card-title"><span>⚔ Level Up Uitvoeren</span></div>
+        <p style="margin-top:0; font-size:0.95rem;">Verhoog je niveau, tel je nieuw gegooide Hit Points op en stel het nieuwe XP-doel in.</p>
+        <div class="grid-3" style="margin-bottom:10px;">
+          <div>
+            <label>Extra HP</label>
+            <input type="number" id="lvlUpHpGain" value="6" />
+          </div>
+          <div>
+            <label>Nieuwe THAC0</label>
+            <input type="number" id="lvlUpThac0" />
+          </div>
+          <div>
+            <label>Nieuw XP Doel</label>
+            <input type="number" id="lvlUpNextXp" value="500000" />
+          </div>
+        </div>
+        <button class="btn btn-crimson" style="width:100%;" onclick="performLevelUp()">Stijg naar Niveau <span id="nextLvlBtnNum">2</span></button>
+      </div>
+
+      <!-- XP Logboek -->
+      <div class="card">
+        <div class="card-title"><span>XP Toevoegen & Logboek</span></div>
+        <div class="grid-2" style="margin-bottom:8px;">
+          <input type="number" id="addXpAmount" placeholder="Aantal XP (bijv. 45000)" />
+          <input type="text" id="addXpReason" placeholder="Reden (bijv. Sessie Immersea)" />
+        </div>
+        <button class="btn" style="width:100%; margin-bottom:12px;" onclick="addXPEntry()">+ XP Bijschrijven</button>
+        <div id="xpLogList"></div>
+      </div>
+    </section>
+
+    <!-- TAB 3: INVENTARIS -->
+    <section id="tab-inv" class="tab-panel">
+      <div class="card">
+        <div class="card-title">
+          <span>Geldbeurs</span>
+          <span class="badge" id="totalGoldBadge">0 GP totaal</span>
+        </div>
+        <div class="grid-5">
+          <div class="stat-box">
+            <label>PP (5gp)</label>
+            <input type="number" id="coinPP" oninput="saveCoins()" />
+          </div>
+          <div class="stat-box">
+            <label>GP (1gp)</label>
+            <input type="number" id="coinGP" oninput="saveCoins()" />
+          </div>
+          <div class="stat-box">
+            <label>EP (0.5)</label>
+            <input type="number" id="coinEP" oninput="saveCoins()" />
+          </div>
+          <div class="stat-box">
+            <label>SP (0.1)</label>
+            <input type="number" id="coinSP" oninput="saveCoins()" />
+          </div>
+          <div class="stat-box">
+            <label>CP (0.01)</label>
+            <input type="number" id="coinCP" oninput="saveCoins()" />
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span>Uitrusting & Buit</span>
+          <span class="badge" id="totalWeightBadge">0 lbs</span>
+        </div>
+        <div class="grid-3" style="margin-bottom:8px;">
+          <input type="text" id="itemName" placeholder="Voorwerp (bijv. Sword of the Dales)" style="grid-column: span 2;" />
+          <input type="number" id="itemWeight" placeholder="Gewicht (lbs)" step="0.1" />
+        </div>
+        <div class="grid-2" style="margin-bottom:10px;">
+          <input type="number" id="itemQty" value="1" min="1" placeholder="Aantal" />
+          <button class="btn" onclick="addItem()">+ Toevoegen</button>
+        </div>
+        <div id="inventoryList"></div>
+      </div>
+    </section>
+
+    <!-- TAB 4: WERELD (NPC'S & LOCATIES) -->
+    <section id="tab-world" class="tab-panel">
+      <div class="card">
+        <div class="card-title"><span>Personen & Locaties Vastleggen</span></div>
+        <div class="grid-2" style="margin-bottom:8px;">
+          <select id="worldType">
+            <option value="NPC">👤 Persoon / God (NPC)</option>
+            <option value="Plaats">🏰 Bezochte Plaats</option>
+          </select>
+          <input type="text" id="worldName" placeholder="Naam..." />
+        </div>
+        <input type="text" id="worldNote" placeholder="Notitie (bijv. Leider van Daggerdale...)" style="margin-bottom:8px;" />
+        <button class="btn" style="width:100%;" onclick="addWorldEntry()">+ Opslaan in Kroniek</button>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span>Forgotten Realms Overzicht</span>
+          <span class="badge" id="worldCountBadge">0</span>
+        </div>
+        <div class="filter-row">
+          <button class="filter-pill active" onclick="setWorldFilter('ALL', this)">Alles</button>
+          <button class="filter-pill" onclick="setWorldFilter('NPC', this)">Personen</button>
+          <button class="filter-pill" onclick="setWorldFilter('Plaats', this)">Plaatsen</button>
+        </div>
+        <input type="text" id="worldSearch" oninput="renderWorld()" placeholder="🔍 Zoek op naam of notitie..." style="margin-bottom:10px;" />
+        <div id="worldList"></div>
+      </div>
+    </section>
+
+    <!-- TAB 5: MONSTER DODENLIJST -->
+    <section id="tab-kills" class="tab-panel">
+      <div class="card">
+        <div class="card-title">
+          <span>Verslagen Monsters</span>
+          <span class="badge" id="totalKillsBadge">0 verslagen</span>
+        </div>
+        <div class="grid-3" style="margin-bottom:8px;">
+          <input type="text" id="monsterName" placeholder="Monster (bijv. Aboleth)" style="grid-column: span 2;" />
+          <input type="number" id="monsterXp" placeholder="XP waarde" />
+        </div>
+        <button class="btn btn-crimson" style="width:100%;" onclick="addMonster()">+ Monster Registreren</button>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span>Dodenlijst</span></div>
+        <p style="font-size:0.85rem; color:var(--ink-muted); margin-top:0;">Tip: Klik op <strong>+1</strong> om een extra verslagen exemplaar te tellen (en optioneel direct XP op te tellen).</p>
+        <div id="killList"></div>
+      </div>
+    </section>
+
+    <!-- TAB 6: DOBBELSTENEN -->
+    <section id="tab-dice" class="tab-panel">
+      <div class="card">
+        <div class="card-title"><span>Dobbelsteen Beker</span></div>
+        <div class="dice-result-box">
+          <div style="font-size:0.85rem; color:var(--ink-muted);" id="diceFormulaDisplay">Kies een dobbelsteen</div>
+          <div class="dice-total" id="diceTotalDisplay">—</div>
+          <div style="font-size:0.9rem; font-style:italic;" id="diceBreakdownDisplay"></div>
+        </div>
+
+        <div class="grid-2" style="margin-bottom:12px;">
+          <div>
+            <label>Aantal stenen</label>
+            <input type="number" id="diceCount" value="1" min="1" max="30" />
+          </div>
+          <div>
+            <label>Modifier (+/-)</label>
+            <input type="number" id="diceMod" value="0" />
+          </div>
+        </div>
+
+        <div class="dice-grid">
+          <button class="dice-btn" onclick="rollDice(4)">d4</button>
+          <button class="dice-btn" onclick="rollDice(6)">d6</button>
+          <button class="dice-btn" onclick="rollDice(8)">d8</button>
+          <button class="dice-btn" onclick="rollDice(10)">d10</button>
+          <button class="dice-btn" onclick="rollDice(12)">d12</button>
+          <button class="dice-btn" onclick="rollDice(20)">d20</button>
+          <button class="dice-btn" onclick="rollDice(100)">d100</button>
+          <button class="dice-btn" style="background:var(--crimson);" onclick="rollAbilitySet()">3d6 x6</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span>Laatste Worpen</span></div>
+        <div id="diceHistory"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Navigatie onderaan -->
+  <nav>
+    <button class="nav-btn active" onclick="switchTab('char', this)">
+      <span class="icon">📜</span>
+      <span>Held</span>
+    </button>
+    <button class="nav-btn" onclick="switchTab('xp', this)">
+      <span class="icon">⭐</span>
+      <span>XP/Lvl</span>
+    </button>
+    <button class="nav-btn" onclick="switchTab('inv', this)">
+      <span class="icon">🎒</span>
+      <span>Buit</span>
+    </button>
+    <button class="nav-btn" onclick="switchTab('world', this)">
+      <span class="icon">🗺️</span>
+      <span>Wereld</span>
+    </button>
+    <button class="nav-btn" onclick="switchTab('kills', this)">
+      <span class="icon">💀</span>
+      <span>Kills</span>
+    </button>
+    <button class="nav-btn" onclick="switchTab('dice', this)">
+      <span class="icon">🎲</span>
+      <span>Dobbel</span>
+    </button>
+  </nav>
+
+  <!-- Data & Backup Modal -->
+  <div class="modal-backdrop" id="dataModal">
+    <div class="modal-content">
+      <div class="card-title">
+        <span>Kroniek Opslag & Backup</span>
+        <button class="btn btn-small" onclick="toggleModal(false)">Sluiten</button>
+      </div>
+      <p style="font-size:0.95rem;">Je gegevens worden automatisch lokaal op je telefoon opgeslagen. Maak hier een back-up of herstel de standaard campagne-data:</p>
+      <div class="grid-2" style="margin-bottom:10px;">
+        <button class="btn" onclick="exportData()">📋 Kopieer Backup</button>
+        <button class="btn btn-crimson" onclick="importData()">📥 Herstel Backup</button>
+      </div>
+      <textarea id="backupArea" rows="4" placeholder="Plak hier je backup-tekst om te herstellen..."></textarea>
+      <button class="btn btn-small" style="width:100%; margin-top:10px;" onclick="resetToBlogData()">🔄 Herlaad Forgotten Realms Blog Data</button>
+    </div>
+  </div>
+
+  <script>
+    const defaultData = {
+      char: {
+        name: "Berthramus Cormaeril",
+        race: "Human",
+        charClass: "Fighter / Noble",
+        level: 9,
+        alignment: "Lawful Neutral",
+        ac: 2,
+        thac0: 12,
+        move: "120' (40')",
+        hpCurr: 72,
+        hpMax: 72,
+        stats: { str: "18/51", dex: 15, con: 16, int: 12, wis: 11, cha: 15 },
+        saves: { ppd: 8, rsw: 10, pp: 9, bw: 9, spl: 11 },
+        notes: "Verloofd met Silver Morn (zus van Randall Morn).\nBevriend met Elminster.\nZoon van Geoffrei en Thera Cormaeril (Immersea)."
+      },
+      xp: {
+        current: 276000,
+        next: 500000,
+        log: [
+          { amount: 45000, reason: "Shrine of Selûne & Wyvernwater mysterie (21/10/2026)" },
+          { amount: 35000, reason: "King's Forest Portal-Nexus & Immersea voorbereidingen (07/10/2026)" },
+          { amount: 30000, reason: "Adzarak's Revenants & schatkamer (23/09/2026)" },
+          { amount: 50000, reason: "Gumpie, dolk Agarath, de drie heksen & Kristallen Wereld (19/11/2025)" },
+          { amount: 30000, reason: "Tilverton, Thieves' Guild & Hugues Cormaeril (29/01/2025)" }
+        ]
+      },
+      coins: { pp: 0, gp: 2500, ep: 0, sp: 0, cp: 0 },
+      inventory: [
+        { name: "Sword of the Dales (intelligent longsword)", qty: 1, weight: 4 },
+        { name: "Dagger +4 (gouden gloed, detecteert kwaad)", qty: 1, weight: 1 },
+        { name: "Periapt of Health (immuniteit ziekten)", qty: 1, weight: 0.5 },
+        { name: "Robe of Useful Items", qty: 1, weight: 3 },
+        { name: "Rope of Climbing (3000 lbs)", qty: 1, weight: 5 },
+        { name: "Bag of Tricks & Bag of Holding", qty: 2, weight: 2 },
+        { name: "Boek van Lathander (+1 WIS/CHA, healing)", qty: 1, weight: 3 },
+        { name: "Writ van Torm (toegang tempels Torm/Tyr)", qty: 1, weight: 0 }
+      ],
+      world: [
+        { type: "NPC", name: "Francis", note: "Partylid (Bard uit Sembia), angst voor open water." },
+        { type: "NPC", name: "Finwe", note: "Partylid (Wizard), meester van Fireball & Lightning Bolt." },
+        { type: "NPC", name: "Yue", note: "Partylid (Priesteres van Selûne, half-drow uit Maerimydra)." },
+        { type: "NPC", name: "Antino", note: "Partylid / reisgezel in de Underdark en aan de Moonsea." },
+        { type: "NPC", name: "Randall Morn", note: "Leider van Daggerdale, rechtmatige eigenaar Sword of the Dales." },
+        { type: "NPC", name: "Silver Morn", note: "Zus van Randall Morn uit Dagger Falls, verloofde van Berthramus." },
+        { type: "NPC", name: "Elminster", note: "Machtigste magiër van Faerûn, bondgenoot en uitgenodigd op het huwelijk." },
+        { type: "NPC", name: "Thera & Geoffrei Cormaeril", note: "Ouders van Berthramus in Immersea; Geoffrei kent de King's Forest portal-nexus." },
+        { type: "NPC", name: "Hugues Cormaeril", note: "Dood gewaande grootvader van Berthramus, opgedoken onder Tilverton." },
+        { type: "NPC", name: "Jacques", note: "Beheerder van de Cormaeril Mansion in Immersea." },
+        { type: "NPC", name: "Barria (Barrea)", note: "Paladin van Torm (mist een arm), bevrijd uit Kuo-toa hersenspoeling." },
+        { type: "NPC", name: "Kapitein Morlan Truesilver", note: "Commandeur van de Purple Dragons in Tilverton." },
+        { type: "NPC", name: "Vangerdahast", note: "High Mage van Cormyr en hoofd van de War Wizards." },
+        { type: "NPC", name: "Arthur", note: "Leider van de Thieves' Guild in de riolen van Tilverton." },
+        { type: "NPC", name: "Hilnet (Huis Schoemaff)", note: "Drow-meisje gered uit spinnenweb; dochter hogepriesteres van Lolth in Maerimydra." },
+        { type: "NPC", name: "Teliman & Madarn", note: "Dorpsoudste en spinnenvanger-gids uit het gnomendorp Stompenhaider." },
+        { type: "NPC", name: "Riljan", note: "Silvanesti-elf druïde op excursie in het bos." },
+        { type: "NPC", name: "Hedesterin & Schraven", note: "Geest gebonden in het Sword of the Dales en haar oude leermeester." },
+        { type: "NPC", name: "Gumpie (Studax)", note: "Oogwezen met stalks dat 99 jaar de Netherese dolk Agarath bewaakte." },
+        { type: "NPC", name: "Bermura (The BrightSword)", note: "Intelligent Netherese zwaard dat magie verslindt en tovenaars aanvalt." },
+        { type: "NPC", name: "Vaeroen Zoutnaleen", note: "Drow-priesteres bij Shrine of Selûne in Immersea (verslagen cultist)." },
+        { type: "NPC", name: "Galum de Illithid", note: "Mind Flayer in de Underdark met Duergar-slaven." },
+        { type: "NPC", name: "Graz'zt", note: "Demon Prince of Decadence; corrumpeerde Duergar in Zorthraga." },
+        { type: "NPC", name: "Hodomar, Geldud & Augratar", note: "Verkiezingskandidaten (revolutieleider, Watchlord en gepensioneerde War Wizard)." },
+        { type: "NPC", name: "Flamildinad Firefingers", note: "Excentrieke, zeer krachtige oude magiër." },
+        { type: "Plaats", name: "Immersea & Cormaeril Mansion", note: "Havenstadje aan het Wyvernwater in Cormyr; locatie van het huwelijk." },
+        { type: "Plaats", name: "Wyvernwater", note: "Groot mistig meer bij Immersea met visservloot en water-elf." },
+        { type: "Plaats", name: "King's Forest & Portal-Nexus", note: "Bos in Cormyr met ruïne en hal met 40 portalen (o.a. Shadowdale & Cormanthor)." },
+        { type: "Plaats", name: "Tilverton & Grimwold's Revenge", note: "Door Cormyr ingelijfde grensstad met tempel van Gond en uitgebreide riolen." },
+        { type: "Plaats", name: "Shadowdale & Mistledale", note: "Regio's in de Dalelands verbonden door de rivier Ashaba en Serpent Bridge." },
+        { type: "Plaats", name: "Dagger Falls", note: "Nederzetting van Randall Morn in Daggerdale." },
+        { type: "Plaats", name: "Hillsfar(t)", note: "Grote ommuurde havenstad aan de Moonsea." },
+        { type: "Plaats", name: "Maerimydra (Meremitra)", note: "Drow-stad in de Underdark onder Mistledale." },
+        { type: "Plaats", name: "Zorthraga (Temple of the Sundered Skull)", note: "Ondergrondse Duergar-stad met piramidetempel in de Underdark." },
+        { type: "Plaats", name: "Stompenhaider", note: "Verborgen gnomendorp in het bos." },
+        { type: "Plaats", name: "Castle Cormanthor & Tempel van Shaundakul", note: "Elvenruïne bezet door de Cult of the Dragon." },
+        { type: "Plaats", name: "Gebarsten Toren (Spider Forest)", note: "Door Elminster gespleten zwarte toren waar Randall Morn gevangen zat." },
+        { type: "Plaats", name: "De Rode Kristallen Wereld", note: "Buitenaardse vlakte onder sterrenloze bliksemhemel vol monolieten." }
+      ],
+      kills: [
+        { name: "Vampieren (Shrine of Selûne)", count: 2, xp: 2000 },
+        { name: "Vaeroen Zoutnaleen (Drow Cultist)", count: 1, xp: 3000 },
+        { name: "Revenants (Adzarak's Dungeon)", count: 4, xp: 3000 },
+        { name: "Bun-Gulp (Inktvis-afgod Kuo-toa)", count: 1, xp: 4000 },
+        { name: "Kuo-toa (Vismensen)", count: 10, xp: 420 },
+        { name: "Giant Octopus", count: 1, xp: 1400 },
+        { name: "Giant Crabs", count: 2, xp: 270 },
+        { name: "Aboleth ('De Meester')", count: 1, xp: 5000 },
+        { name: "Rookmonster (Elementaire kamer)", count: 1, xp: 2500 },
+        { name: "Schaduwmonsters", count: 6, xp: 975 },
+        { name: "Succubus (Zorthraga, verbannen)", count: 1, xp: 4000 },
+        { name: "Draconians / Draakachtige Cultisten", count: 8, xp: 1400 },
+        { name: "Fire Knives Assassins", count: 5, xp: 1200 },
+        { name: "Zhentarim Huurlingen & Tovenaars", count: 10, xp: 975 },
+        { name: "Skeletten, Zombies & Ghouls", count: 15, xp: 175 },
+        { name: "Half-Ogres (Lake Melischar)", count: 2, xp: 650 },
+        { name: "Kobolden (Nachtelijke overval)", count: 8, xp: 15 }
+      ],
+      diceHistory: []
+    };
+
+    let state = JSON.parse(localStorage.getItem('add_kroniek_fr_data')) || JSON.parse(JSON.stringify(defaultData));
+    let currentWorldFilter = 'ALL';
+
+    function persist() {
+      localStorage.setItem('add_kroniek_fr_data', JSON.stringify(state));
+    }
+
+    function switchTab(tabId, btnEl) {
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('tab-' + tabId).classList.add('active');
+      btnEl.classList.add('active');
+    }
+
+    function renderChar() {
+      const c = state.char;
+      document.getElementById('headerCharName').textContent = c.name || "AD&D Kroniek";
+      document.getElementById('headerCharSub').textContent = `${c.race} ${c.charClass} • Niveau ${c.level}`;
+      document.getElementById('charAlignmentBadge').textContent = c.alignment;
+
+      document.getElementById('charName').value = c.name;
+      document.getElementById('charRace').value = c.race;
+      document.getElementById('charClass').value = c.charClass;
+      document.getElementById('charLevel').value = c.level;
+      document.getElementById('charAlignment').value = c.alignment;
+      document.getElementById('charAC').value = c.ac;
+      document.getElementById('charThac0').value = c.thac0;
+      document.getElementById('charMove').value = c.move;
+      document.getElementById('charHpCurr').value = c.hpCurr;
+      document.getElementById('charHpMax').value = c.hpMax;
+      document.getElementById('charNotes').value = c.notes;
+
+      const pct = Math.max(0, Math.min(100, (c.hpCurr / (c.hpMax || 1)) * 100));
+      document.getElementById('hpBar').style.width = pct + '%';
+
+      ['str','dex','con','int','wis','cha'].forEach(s => {
+        document.getElementById('stat' + s.charAt(0).toUpperCase() + s.slice(1)).value = c.stats[s];
+      });
+      ['ppd','rsw','pp','bw','spl'].forEach(sv => {
+        document.getElementById('save' + sv.charAt(0).toUpperCase() + sv.slice(1)).value = c.saves[sv];
+      });
+    }
+
+    function saveCharField(field, val) {
+      state.char[field] = val;
+      persist();
+      renderChar();
+      renderXP();
+    }
+
+    function saveStat(stat, val) {
+      state.char.stats[stat] = val;
+      persist();
+    }
+
+    function saveThrow(sv, val) {
+      state.char.saves[sv] = Number(val);
+      persist();
+    }
+
+    function adjustHP(delta) {
+      state.char.hpCurr = Math.min(state.char.hpMax, state.char.hpCurr + delta);
+      persist();
+      renderChar();
+    }
+
+    function renderXP() {
+      const xp = state.xp;
+      const lvl = state.char.level;
+      document.getElementById('xpLevelDisplay').textContent = `Niveau ${lvl}`;
+      document.getElementById('nextLvlBtnNum').textContent = lvl + 1;
+      document.getElementById('xpCurrentText').textContent = `${xp.current.toLocaleString('nl-NL')} XP`;
+      document.getElementById('xpNextText').textContent = `Volgend: ${xp.next.toLocaleString('nl-NL')} XP`;
+      document.getElementById('xpCurrentInput').value = xp.current;
+      document.getElementById('xpNextInput').value = xp.next;
+      document.getElementById('lvlUpThac0').value = state.char.thac0;
+
+      const pct = Math.max(0, Math.min(100, (xp.current / (xp.next || 1)) * 100));
+      document.getElementById('xpBar').style.width = pct + '%';
+
+      const logEl = document.getElementById('xpLogList');
+      logEl.innerHTML = xp.log.map((entry, idx) => `
+        <div class="list-item">
+          <div>
+            <strong>+${entry.amount.toLocaleString('nl-NL')} XP</strong> — ${entry.reason}
+          </div>
+          <button class="btn btn-small btn-crimson" onclick="removeXPLog(${idx})">✕</button>
+        </div>
+      `).join('');
+    }
+
+    function setXP(val) { state.xp.current = val; persist(); renderXP(); }
+    function setNextXP(val) { state.xp.next = val; persist(); renderXP(); }
+
+    function addXPEntry() {
+      const amount = Number(document.getElementById('addXpAmount').value);
+      const reason = document.getElementById('addXpReason').value.trim() || "Avontuur";
+      if (!amount) return;
+      state.xp.current += amount;
+      state.xp.log.unshift({ amount, reason });
+      document.getElementById('addXpAmount').value = '';
+      document.getElementById('addXpReason').value = '';
+      persist();
+      renderXP();
+    }
+
+    function removeXPLog(idx) {
+      state.xp.log.splice(idx, 1);
+      persist();
+      renderXP();
+    }
+
+    function performLevelUp() {
+      const hpGain = Number(document.getElementById('lvlUpHpGain').value) || 0;
+      const newThac0 = Number(document.getElementById('lvlUpThac0').value);
+      const newNextXp = Number(document.getElementById('lvlUpNextXp').value);
+
+      state.char.level += 1;
+      state.char.hpMax += hpGain;
+      state.char.hpCurr += hpGain;
+      if (!isNaN(newThac0)) state.char.thac0 = newThac0;
+      if (newNextXp) state.xp.next = newNextXp;
+
+      state.xp.log.unshift({ amount: 0, reason: `🎉 Gestegen naar Niveau ${state.char.level} (+${hpGain} HP)` });
+      persist();
+      renderChar();
+      renderXP();
+      alert(`Gefeliciteerd! ${state.char.name} is nu Niveau ${state.char.level}!`);
+    }
+
+    function renderInventory() {
+      const c = state.coins;
+      ['pp','gp','ep','sp','cp'].forEach(k => {
+        document.getElementById('coin' + k.toUpperCase()).value = c[k];
+      });
+      const totalGp = (c.pp * 5) + c.gp + (c.ep * 0.5) + (c.sp * 0.1) + (c.cp * 0.01);
+      document.getElementById('totalGoldBadge').textContent = `${totalGp.toFixed(2)} GP totaal`;
+
+      let totalWeight = 0;
+      const listEl = document.getElementById('inventoryList');
+      listEl.innerHTML = state.inventory.map((item, idx) => {
+        const w = (item.qty * item.weight);
+        totalWeight += w;
+        return `
+          <div class="list-item">
+            <div>
+              <strong>${item.qty}x ${item.name}</strong>
+              <div style="font-size:0.85rem; color:var(--ink-muted);">${w.toFixed(1)} lbs totaal</div>
+            </div>
+            <button class="btn btn-small btn-crimson" onclick="removeItem(${idx})">✕</button>
+          </div>
+        `;
+      }).join('');
+      document.getElementById('totalWeightBadge').textContent = `${totalWeight.toFixed(1)} lbs`;
+    }
+
+    function saveCoins() {
+      ['pp','gp','ep','sp','cp'].forEach(k => {
+        state.coins[k] = Number(document.getElementById('coin' + k.toUpperCase()).value) || 0;
+      });
+      persist();
+      renderInventory();
+    }
+
+    function addItem() {
+      const name = document.getElementById('itemName').value.trim();
+      const weight = Number(document.getElementById('itemWeight').value) || 0;
+      const qty = Number(document.getElementById('itemQty').value) || 1;
+      if (!name) return;
+      state.inventory.push({ name, qty, weight });
+      document.getElementById('itemName').value = '';
+      document.getElementById('itemWeight').value = '';
+      document.getElementById('itemQty').value = '1';
+      persist();
+      renderInventory();
+    }
+
+    function removeItem(idx) {
+      state.inventory.splice(idx, 1);
+      persist();
+      renderInventory();
+    }
+
+    function setWorldFilter(type, btnEl) {
+      currentWorldFilter = type;
+      document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+      btnEl.classList.add('active');
+      renderWorld();
+    }
+
+    function renderWorld() {
+      const query = document.getElementById('worldSearch').value.toLowerCase();
+      const filtered = state.world
+        .map((item, idx) => ({ ...item, idx }))
+        .filter(i => (currentWorldFilter === 'ALL' || i.type === currentWorldFilter))
+        .filter(i => i.name.toLowerCase().includes(query) || i.note.toLowerCase().includes(query));
+
+      document.getElementById('worldCountBadge').textContent = `${filtered.length} vermeldingen`;
+      document.getElementById('worldList').innerHTML = filtered.map(item => `
+        <div class="list-item">
+          <div>
+            <span class="badge">${item.type}</span> <strong>${item.name}</strong>
+            <div style="font-size:0.92rem; color:var(--ink-muted); margin-top:2px;">${item.note}</div>
+          </div>
+          <button class="btn btn-small btn-crimson" onclick="removeWorld(${item.idx})">✕</button>
+        </div>
+      `).join('');
+    }
+
+    function addWorldEntry() {
+      const type = document.getElementById('worldType').value;
+      const name = document.getElementById('worldName').value.trim();
+      const note = document.getElementById('worldNote').value.trim();
+      if (!name) return;
+      state.world.unshift({ type, name, note });
+      document.getElementById('worldName').value = '';
+      document.getElementById('worldNote').value = '';
+      persist();
+      renderWorld();
+    }
+
+    function removeWorld(idx) {
+      state.world.splice(idx, 1);
+      persist();
+      renderWorld();
+    }
+
+    function renderKills() {
+      let total = 0;
+      document.getElementById('killList').innerHTML = state.kills.map((m, idx) => {
+        total += m.count;
+        return `
+          <div class="list-item">
+            <div>
+              <strong>${m.name}</strong> <span class="badge">${m.count}x</span>
+              <div style="font-size:0.85rem; color:var(--ink-muted);">${m.xp} XP per stuk</div>
+            </div>
+            <div style="display:flex; gap:6px;">
+              <button class="btn btn-small" onclick="incrementKill(${idx})">+1</button>
+              <button class="btn btn-small btn-crimson" onclick="removeKill(${idx})">✕</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+      document.getElementById('totalKillsBadge').textContent = `${total} verslagen`;
+    }
+
+    function addMonster() {
+      const name = document.getElementById('monsterName').value.trim();
+      const xp = Number(document.getElementById('monsterXp').value) || 0;
+      if (!name) return;
+      state.kills.unshift({ name, count: 1, xp });
+      if (xp > 0 && confirm(`Wil je ${xp} XP direct bij je karakter optellen?`)) {
+        state.xp.current += xp;
+        state.xp.log.unshift({ amount: xp, reason: `Verslagen: ${name}` });
+        renderXP();
+      }
+      document.getElementById('monsterName').value = '';
+      document.getElementById('monsterXp').value = '';
+      persist();
+      renderKills();
+    }
+
+    function incrementKill(idx) {
+      const m = state.kills[idx];
+      m.count += 1;
+      if (m.xp > 0 && confirm(`Extra ${m.name} verslagen! ${m.xp} XP optellen?`)) {
+        state.xp.current += m.xp;
+        state.xp.log.unshift({ amount: m.xp, reason: `Verslagen: ${m.name}` });
+        renderXP();
+      }
+      persist();
+      renderKills();
+    }
+
+    function removeKill(idx) {
+      state.kills.splice(idx, 1);
+      persist();
+      renderKills();
+    }
+
+    function rollDice(sides) {
+      const count = Math.max(1, Number(document.getElementById('diceCount').value) || 1);
+      const mod = Number(document.getElementById('diceMod').value) || 0;
+      let rolls = [];
+      let sum = 0;
+      for (let i = 0; i < count; i++) {
+        const r = Math.floor(Math.random() * sides) + 1;
+        rolls.push(r);
+        sum += r;
+      }
+      const total = sum + mod;
+      const modStr = mod === 0 ? '' : (mod > 0 ? ` + ${mod}` : ` - ${Math.abs(mod)}`);
+      const formula = `${count}d${sides}${modStr}`;
+      const breakdown = `[${rolls.join(', ')}]${modStr}`;
+
+      document.getElementById('diceFormulaDisplay').textContent = formula;
+      document.getElementById('diceTotalDisplay').textContent = total;
+      document.getElementById('diceBreakdownDisplay').textContent = breakdown;
+
+      state.diceHistory.unshift({ formula, total, breakdown });
+      if (state.diceHistory.length > 8) state.diceHistory.pop();
+      persist();
+      renderDiceHistory();
+    }
+
+    function rollAbilitySet() {
+      let stats = [];
+      for (let s = 0; s < 6; s++) {
+        let sum = 0;
+        for (let d = 0; d < 3; d++) sum += Math.floor(Math.random() * 6) + 1;
+        stats.push(sum);
+      }
+      document.getElementById('diceFormulaDisplay').textContent = "Nieuw Karakter (6x 3d6)";
+      document.getElementById('diceTotalDisplay').textContent = stats.join(' • ');
+      document.getElementById('diceBreakdownDisplay').textContent = "Verdeel over STR, DEX, CON, INT, WIS, CHA";
+    }
+
+    function renderDiceHistory() {
+      document.getElementById('diceHistory').innerHTML = state.diceHistory.map(h => `
+        <div class="list-item">
+          <span><strong>${h.formula}</strong> <span style="color:var(--ink-muted); font-size:0.9rem;">${h.breakdown}</span></span>
+          <strong style="color:var(--crimson); font-size:1.1rem;">${h.total}</strong>
+        </div>
+      `).join('');
+    }
+
+    function toggleModal(open) {
+      document.getElementById('dataModal').classList.toggle('open', open);
+    }
+
+    function exportData() {
+      const json = JSON.stringify(state);
+      document.getElementById('backupArea').value = json;
+      navigator.clipboard?.writeText(json);
+      alert("Backup gekopieerd naar klembord!");
+    }
+
+    function importData() {
+      try {
+        const raw = document.getElementById('backupArea').value.trim();
+        const parsed = JSON.parse(raw);
+        if (parsed.char && parsed.xp) {
+          state = parsed;
+          persist();
+          initAll();
+          toggleModal(false);
+          alert("Kroniek succesvol hersteld!");
+        }
+      } catch (e) {
+        alert("Ongeldige backup-tekst.");
+      }
+    }
+
+    function resetToBlogData() {
+      if (confirm("Weet je zeker dat je de volledige Forgotten Realms blog-data wilt herladen? Huidige wijzigingen worden overschreven.")) {
+        state = JSON.parse(JSON.stringify(defaultData));
+        persist();
+        initAll();
+        toggleModal(false);
+      }
+    }
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(() => {});
+      });
+    }
+
+    function initAll() {
+      renderChar();
+      renderXP();
+      renderInventory();
+      renderWorld();
+      renderKills();
+      renderDiceHistory();
+    }
+
+    initAll();
+  </script>
+</body>
+</html>
