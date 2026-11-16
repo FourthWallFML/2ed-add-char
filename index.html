@@ -3,29 +3,30 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="theme-color" content="#3d2817" />
+  <meta name="theme-color" content="#23170f" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <title>AD&D Kroniek</title>
   <link rel="manifest" href="./manifest.json" />
+  <link rel="icon" type="image/png" href="./icon-192.png" />
+  <link rel="apple-touch-icon" href="./icon-512.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
   <style>
     :root {
-      --leather-dark: #23170f;
-      --leather-mid: #3d2817;
-      --leather-light: #5c3d24;
+      --leather-dark: #1f130b;
+      --leather-mid: #3a2414;
+      --leather-light: #593820;
       --gold: #d4af37;
       --gold-dim: #9e7e24;
       --parchment-bg: #f3e5c8;
-      --parchment-card: #faf0da;
-      --parchment-border: #cbb389;
-      --ink-dark: #26180d;
-      --ink-muted: #5e4733;
+      --parchment-card: rgba(250, 240, 218, 0.90);
+      --parchment-border: #bfa374;
+      --ink-dark: #231409;
+      --ink-muted: #59412d;
       --crimson: #8b1e1e;
       --crimson-hover: #a82424;
-      --forest: #2e5a36;
     }
 
     * {
@@ -35,70 +36,95 @@
 
     body {
       margin: 0;
-      padding: 0 0 82px 0;
+      padding: 0 0 74px 0;
       font-family: 'Crimson Text', Georgia, serif;
-      font-size: 18px;
+      font-size: 16px;
       color: var(--ink-dark);
-      background-color: var(--parchment-bg);
-      background-image: 
-        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.4) 0%, transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(160, 125, 75, 0.25) 0%, transparent 60%),
-        repeating-linear-gradient(45deg, rgba(139, 105, 55, 0.03) 0px, rgba(139, 105, 55, 0.03) 2px, transparent 2px, transparent 6px);
+      background-color: #23170f;
+      background-image: url('./bg.jpg');
+      background-size: cover;
+      background-position: center center;
+      background-attachment: fixed;
       min-height: 100vh;
     }
 
     h1, h2, h3, .font-display {
       font-family: 'Cinzel', serif;
       margin: 0;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.4px;
     }
 
+    /* Compacte Header met app-icoon */
     header {
-      background: linear-gradient(180deg, var(--leather-dark) 0%, var(--leather-mid) 100%);
+      background: linear-gradient(180deg, rgba(24, 14, 8, 0.96) 0%, rgba(52, 32, 18, 0.95) 100%);
       color: var(--parchment-bg);
-      padding: 14px 16px;
-      border-bottom: 3px solid var(--gold);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.45);
+      padding: 8px 12px;
+      border-bottom: 2px solid var(--gold);
+      box-shadow: 0 3px 10px rgba(0,0,0,0.55);
       display: flex;
       justify-content: space-between;
       align-items: center;
       position: sticky;
       top: 0;
       z-index: 50;
+      gap: 10px;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      min-width: 0;
+    }
+
+    .app-logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      border: 1px solid var(--gold);
+      object-fit: cover;
+      flex-shrink: 0;
     }
 
     header h1 {
-      font-size: 1.25rem;
+      font-size: 1.05rem;
       color: var(--gold);
       text-shadow: 1px 1px 2px #000;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .header-sub {
-      font-size: 0.85rem;
+      font-size: 0.78rem;
       color: #d6c3a5;
       font-style: italic;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .btn-gold-outline {
-      background: rgba(0,0,0,0.3);
+      background: rgba(0,0,0,0.35);
       border: 1px solid var(--gold);
       color: var(--gold);
       font-family: 'Cinzel', serif;
-      font-size: 0.75rem;
-      padding: 6px 10px;
-      border-radius: 6px;
+      font-size: 0.72rem;
+      padding: 5px 8px;
+      border-radius: 5px;
       cursor: pointer;
+      flex-shrink: 0;
     }
 
     main {
-      max-width: 720px;
+      max-width: 680px;
       margin: 0 auto;
-      padding: 14px;
+      padding: 10px;
     }
 
     .tab-panel {
       display: none;
-      animation: fadeIn 0.2s ease-in;
+      animation: fadeIn 0.15s ease-in;
     }
 
     .tab-panel.active {
@@ -106,26 +132,26 @@
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(4px); }
-      to { opacity: 1; transform: translateY(0); }
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
 
     .card {
       background: var(--parchment-card);
+      backdrop-filter: blur(2px);
       border: 1px solid var(--parchment-border);
-      border-radius: 8px;
-      padding: 14px;
-      margin-bottom: 14px;
-      box-shadow: 0 2px 6px rgba(45, 25, 10, 0.12), inset 0 0 18px rgba(185, 145, 90, 0.15);
-      position: relative;
+      border-radius: 7px;
+      padding: 10px;
+      margin-bottom: 10px;
+      box-shadow: 0 3px 8px rgba(20, 10, 4, 0.35), inset 0 0 14px rgba(185, 145, 90, 0.18);
     }
 
     .card-title {
-      font-size: 1.05rem;
+      font-size: 0.92rem;
       color: var(--crimson);
       border-bottom: 1px solid var(--parchment-border);
-      padding-bottom: 6px;
-      margin-bottom: 12px;
+      padding-bottom: 4px;
+      margin-bottom: 8px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -133,21 +159,22 @@
 
     label {
       display: block;
-      font-size: 0.82rem;
+      font-size: 0.68rem;
       font-weight: 700;
       text-transform: uppercase;
       color: var(--ink-muted);
-      margin-bottom: 3px;
+      margin-bottom: 2px;
+      letter-spacing: 0.3px;
     }
 
     input, select, textarea {
       width: 100%;
-      background: rgba(255, 252, 245, 0.85);
+      background: rgba(255, 252, 245, 0.9);
       border: 1px solid #b59b72;
-      border-radius: 5px;
-      padding: 7px 9px;
+      border-radius: 4px;
+      padding: 5px 7px;
       font-family: 'Crimson Text', serif;
-      font-size: 1rem;
+      font-size: 0.95rem;
       color: var(--ink-dark);
     }
 
@@ -157,26 +184,28 @@
       background: #fff;
     }
 
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-    .grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; }
+    .grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; }
+    .grid-6 { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; }
 
     .btn {
       background: linear-gradient(180deg, var(--leather-light) 0%, var(--leather-mid) 100%);
       color: var(--parchment-bg);
       border: 1px solid var(--gold-dim);
-      padding: 8px 14px;
-      border-radius: 6px;
+      padding: 6px 11px;
+      border-radius: 5px;
       font-family: 'Cinzel', serif;
-      font-size: 0.85rem;
+      font-size: 0.78rem;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
+      gap: 4px;
     }
 
-    .btn:active { transform: scale(0.98); }
+    .btn:active { transform: scale(0.97); }
 
     .btn-crimson {
       background: linear-gradient(180deg, var(--crimson-hover) 0%, var(--crimson) 100%);
@@ -184,62 +213,77 @@
     }
 
     .btn-small {
-      padding: 4px 9px;
-      font-size: 0.78rem;
+      padding: 3px 7px;
+      font-size: 0.72rem;
     }
 
+    /* Compacte Stat Boxes */
     .stat-box {
-      background: rgba(235, 218, 185, 0.55);
+      background: rgba(235, 218, 185, 0.65);
       border: 1px solid var(--parchment-border);
-      border-radius: 6px;
-      padding: 8px 6px;
+      border-radius: 5px;
+      padding: 5px 3px;
       text-align: center;
+    }
+
+    .stat-box label {
+      font-size: 0.64rem;
+      margin-bottom: 1px;
     }
 
     .stat-box input {
       text-align: center;
       font-family: 'Cinzel', serif;
       font-weight: 700;
-      font-size: 1.15rem;
-      padding: 4px;
+      font-size: 1rem;
+      padding: 2px 1px;
+      background: rgba(255,255,255,0.75);
     }
 
+    /* Compacte HP & XP balken */
     .hp-bar-wrap {
       background: #d8c7a8;
       border: 1px solid #9c825c;
-      height: 16px;
-      border-radius: 8px;
+      height: 11px;
+      border-radius: 6px;
       overflow: hidden;
-      margin: 8px 0;
+      margin: 5px 0;
     }
 
     .hp-bar-fill {
       background: linear-gradient(90deg, #6e1414, #a82424);
       height: 100%;
-      transition: width 0.3s ease;
+      transition: width 0.25s ease;
     }
 
     .xp-bar-fill {
       background: linear-gradient(90deg, #244d2b, #3c7d47);
       height: 100%;
-      transition: width 0.3s ease;
+      transition: width 0.25s ease;
     }
 
+    /* Lijst items en inline bewerking */
     .list-item {
       border-bottom: 1px dashed var(--parchment-border);
-      padding: 9px 0;
+      padding: 7px 0;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
     }
 
     .list-item:last-child { border-bottom: none; }
 
+    .item-actions {
+      display: flex;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+
     .badge {
       display: inline-block;
-      padding: 2px 7px;
-      font-size: 0.75rem;
+      padding: 1px 6px;
+      font-size: 0.7rem;
       border-radius: 4px;
       font-weight: 700;
       background: var(--leather-mid);
@@ -248,18 +292,18 @@
 
     .filter-row {
       display: flex;
-      gap: 6px;
-      margin-bottom: 10px;
+      gap: 5px;
+      margin-bottom: 8px;
     }
 
     .filter-pill {
       flex: 1;
-      padding: 6px;
-      border-radius: 6px;
+      padding: 5px;
+      border-radius: 5px;
       border: 1px solid var(--parchment-border);
-      background: rgba(235, 218, 185, 0.5);
+      background: rgba(235, 218, 185, 0.65);
       font-family: 'Cinzel', serif;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       cursor: pointer;
       color: var(--ink-dark);
     }
@@ -273,15 +317,15 @@
     .dice-result-box {
       background: radial-gradient(circle, #fff8e7 0%, #e6d1a8 100%);
       border: 2px solid var(--gold-dim);
-      border-radius: 10px;
-      padding: 16px;
+      border-radius: 8px;
+      padding: 12px;
       text-align: center;
-      margin-bottom: 14px;
+      margin-bottom: 10px;
     }
 
     .dice-total {
       font-family: 'Cinzel', serif;
-      font-size: 2.6rem;
+      font-size: 2.3rem;
       font-weight: 800;
       color: var(--crimson);
       line-height: 1.1;
@@ -290,35 +334,36 @@
     .dice-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
+      gap: 6px;
     }
 
     .dice-btn {
       background: linear-gradient(180deg, #4a311d 0%, #2a1b0f 100%);
       color: var(--gold);
       border: 1px solid var(--gold);
-      border-radius: 8px;
-      padding: 12px 4px;
+      border-radius: 7px;
+      padding: 10px 4px;
       font-family: 'Cinzel', serif;
       font-weight: 700;
-      font-size: 1rem;
+      font-size: 0.95rem;
       cursor: pointer;
     }
 
     .dice-btn:active { background: var(--crimson); }
 
+    /* Navigatie onderaan */
     nav {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
-      background: linear-gradient(0deg, var(--leather-dark) 0%, var(--leather-mid) 100%);
+      background: linear-gradient(0deg, rgba(24, 14, 8, 0.98) 0%, rgba(52, 32, 18, 0.96) 100%);
       border-top: 2px solid var(--gold);
       display: grid;
       grid-template-columns: repeat(6, 1fr);
-      padding: 4px 2px;
+      padding: 3px 2px;
       z-index: 50;
-      box-shadow: 0 -3px 10px rgba(0,0,0,0.4);
+      box-shadow: 0 -3px 10px rgba(0,0,0,0.5);
     }
 
     .nav-btn {
@@ -329,29 +374,29 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 6px 2px;
+      padding: 5px 2px;
       font-family: 'Cinzel', serif;
-      font-size: 0.62rem;
+      font-size: 0.6rem;
       cursor: pointer;
-      gap: 3px;
+      gap: 2px;
     }
 
-    .nav-btn span.icon { font-size: 1.15rem; }
+    .nav-btn span.icon { font-size: 1.05rem; }
 
     .nav-btn.active {
       color: var(--gold);
       font-weight: 700;
-      background: rgba(212, 175, 55, 0.12);
-      border-radius: 6px;
+      background: rgba(212, 175, 55, 0.15);
+      border-radius: 5px;
     }
 
     .modal-backdrop {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(15, 10, 5, 0.8);
+      background: rgba(15, 10, 5, 0.82);
       z-index: 100;
-      padding: 16px;
+      padding: 14px;
       overflow-y: auto;
     }
 
@@ -360,9 +405,9 @@
     .modal-content {
       background: var(--parchment-bg);
       border: 2px solid var(--gold);
-      border-radius: 10px;
-      padding: 18px;
-      max-width: 500px;
+      border-radius: 8px;
+      padding: 14px;
+      max-width: 480px;
       width: 100%;
     }
   </style>
@@ -370,39 +415,38 @@
 <body>
 
   <header>
-    <div>
-      <h1 id="headerCharName">AD&D Kroniek</h1>
-      <div class="header-sub" id="headerCharSub">Avonturier • Niveau 1</div>
+    <div class="header-left">
+      <img src="./icon-192.png" alt="AD&D" class="app-logo" />
+      <div style="min-width:0;">
+        <h1 id="headerCharName">AD&D Kroniek</h1>
+        <div class="header-sub" id="headerCharSub">Avonturier • Niveau 1</div>
+      </div>
     </div>
     <button class="btn-gold-outline" onclick="toggleModal(true)">⚙ Data</button>
   </header>
 
   <main>
-    <!-- TAB 1: KARAKTERBLAD -->
+    <!-- TAB 1: COMPACT KARAKTERBLAD -->
     <section id="tab-char" class="tab-panel active">
       <div class="card">
-        <div class="card-title">
-          <span>Identiteit</span>
-          <span class="badge" id="charAlignmentBadge">Lawful Neutral</span>
-        </div>
-        <div class="grid-2" style="margin-bottom:8px;">
-          <div>
+        <div class="grid-3" style="margin-bottom:6px;">
+          <div style="grid-column: span 2;">
             <label>Naam</label>
-            <input type="text" id="charName" oninput="saveCharField('name', this.value)" placeholder="Bijv. Berthramus Cormaeril" />
-          </div>
-          <div>
-            <label>Ras</label>
-            <input type="text" id="charRace" oninput="saveCharField('race', this.value)" placeholder="Human, Elf, Dwarf..." />
-          </div>
-        </div>
-        <div class="grid-3">
-          <div>
-            <label>Klasse</label>
-            <input type="text" id="charClass" oninput="saveCharField('charClass', this.value)" placeholder="Fighter, Mage..." />
+            <input type="text" id="charName" oninput="saveCharField('name', this.value)" />
           </div>
           <div>
             <label>Niveau</label>
             <input type="number" id="charLevel" oninput="saveCharField('level', Number(this.value))" />
+          </div>
+        </div>
+        <div class="grid-3" style="margin-bottom:8px;">
+          <div>
+            <label>Ras</label>
+            <input type="text" id="charRace" oninput="saveCharField('race', this.value)" />
+          </div>
+          <div>
+            <label>Klasse</label>
+            <input type="text" id="charClass" oninput="saveCharField('charClass', this.value)" />
           </div>
           <div>
             <label>Alignment</label>
@@ -410,7 +454,7 @@
               <option>Lawful Good</option>
               <option>Neutral Good</option>
               <option>Chaotic Good</option>
-              <option selected>Lawful Neutral</option>
+              <option>Lawful Neutral</option>
               <option>True Neutral</option>
               <option>Chaotic Neutral</option>
               <option>Lawful Evil</option>
@@ -419,16 +463,11 @@
             </select>
           </div>
         </div>
-      </div>
 
-      <!-- Gevecht & HP -->
-      <div class="card">
-        <div class="card-title">
-          <span>Gevecht & Levenspunten</span>
-        </div>
-        <div class="grid-3" style="margin-bottom:10px;">
+        <!-- Gevechtswaarden op 1 rij -->
+        <div class="grid-4" style="margin-bottom:8px;">
           <div class="stat-box">
-            <label>Armor Class</label>
+            <label>AC</label>
             <input type="number" id="charAC" oninput="saveCharField('ac', Number(this.value))" />
           </div>
           <div class="stat-box">
@@ -436,37 +475,37 @@
             <input type="number" id="charThac0" oninput="saveCharField('thac0', Number(this.value))" />
           </div>
           <div class="stat-box">
-            <label>Movement</label>
+            <label>Move</label>
             <input type="text" id="charMove" oninput="saveCharField('move', this.value)" />
+          </div>
+          <div class="stat-box">
+            <label>HP (Nu/Max)</label>
+            <div style="display:flex; gap:2px; align-items:center;">
+              <input type="number" id="charHpCurr" oninput="saveCharField('hpCurr', Number(this.value))" />
+              <span>/</span>
+              <input type="number" id="charHpMax" oninput="saveCharField('hpMax', Number(this.value))" />
+            </div>
           </div>
         </div>
 
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-          <label style="margin:0;">Hit Points (Huidig / Max)</label>
-          <div>
-            <button class="btn btn-small btn-crimson" onclick="adjustHP(-1)">-1</button>
-            <button class="btn btn-small" onclick="adjustHP(1)">+1</button>
+        <!-- HP Balk + Snelle +/- knoppen -->
+        <div style="display:flex; align-items:center; gap:6px;">
+          <button class="btn btn-small btn-crimson" onclick="adjustHP(-5)">-5</button>
+          <button class="btn btn-small btn-crimson" onclick="adjustHP(-1)">-1</button>
+          <div class="hp-bar-wrap" style="flex:1; margin:0;">
+            <div class="hp-bar-fill" id="hpBar" style="width:100%;"></div>
           </div>
-        </div>
-        <div class="hp-bar-wrap">
-          <div class="hp-bar-fill" id="hpBar" style="width:100%;"></div>
-        </div>
-        <div class="grid-2">
-          <div>
-            <input type="number" id="charHpCurr" oninput="saveCharField('hpCurr', Number(this.value))" />
-          </div>
-          <div>
-            <input type="number" id="charHpMax" oninput="saveCharField('hpMax', Number(this.value))" />
-          </div>
+          <button class="btn btn-small" onclick="adjustHP(1)">+1</button>
+          <button class="btn btn-small" onclick="adjustHP(5)">+5</button>
         </div>
       </div>
 
-      <!-- Ability Scores -->
+      <!-- Ability Scores & Saving Throws compact -->
       <div class="card">
-        <div class="card-title"><span>Ability Scores</span></div>
-        <div class="grid-3">
+        <label style="margin-bottom:4px;">Ability Scores</label>
+        <div class="grid-6" style="margin-bottom:8px;">
           <div class="stat-box">
-            <label>STR (bijv. 18/51)</label>
+            <label>STR</label>
             <input type="text" id="statStr" oninput="saveStat('str', this.value)" />
           </div>
           <div class="stat-box">
@@ -490,11 +529,8 @@
             <input type="number" id="statCha" oninput="saveStat('cha', this.value)" />
           </div>
         </div>
-      </div>
 
-      <!-- Saving Throws -->
-      <div class="card">
-        <div class="card-title"><span>Saving Throws</span></div>
+        <label style="margin-bottom:4px;">Saving Throws (PPD • RSW • PP • BW • SPL)</label>
         <div class="grid-5">
           <div class="stat-box">
             <label title="Paralyzation, Poison, Death Magic">PPD</label>
@@ -521,8 +557,8 @@
 
       <!-- Notities & Spreuken -->
       <div class="card">
-        <div class="card-title"><span>Vaardigheden, Talen & Spreuken</span></div>
-        <textarea id="charNotes" rows="4" oninput="saveCharField('notes', this.value)" placeholder="Weapon proficiencies, thief skills, spreuken..."></textarea>
+        <label>Vaardigheden, Wapens, Talen & Spreuken</label>
+        <textarea id="charNotes" rows="3" oninput="saveCharField('notes', this.value)" placeholder="Weapon proficiencies, thief skills, spreuken..."></textarea>
       </div>
     </section>
 
@@ -533,7 +569,7 @@
           <span>Ervaring (XP)</span>
           <span class="badge" id="xpLevelDisplay">Niveau 1</span>
         </div>
-        <div style="display:flex; justify-content:space-between; font-weight:bold;">
+        <div style="display:flex; justify-content:space-between; font-weight:bold; font-size:0.9rem;">
           <span id="xpCurrentText">0 XP</span>
           <span id="xpNextText">Volgend: 2000 XP</span>
         </div>
@@ -541,7 +577,7 @@
           <div class="xp-bar-fill" id="xpBar" style="width:0%;"></div>
         </div>
 
-        <div class="grid-2" style="margin-top:10px;">
+        <div class="grid-2" style="margin-top:8px;">
           <div>
             <label>Huidige XP</label>
             <input type="number" id="xpCurrentInput" oninput="setXP(Number(this.value))" />
@@ -554,10 +590,9 @@
       </div>
 
       <!-- Level Up Paneel -->
-      <div class="card" id="levelUpCard" style="border: 2px solid var(--gold);">
+      <div class="card" style="border: 2px solid var(--gold);">
         <div class="card-title"><span>⚔ Level Up Uitvoeren</span></div>
-        <p style="margin-top:0; font-size:0.95rem;">Verhoog je niveau, tel je nieuw gegooide Hit Points op en stel het nieuwe XP-doel in.</p>
-        <div class="grid-3" style="margin-bottom:10px;">
+        <div class="grid-3" style="margin-bottom:8px;">
           <div>
             <label>Extra HP</label>
             <input type="number" id="lvlUpHpGain" value="6" />
@@ -577,11 +612,11 @@
       <!-- XP Logboek -->
       <div class="card">
         <div class="card-title"><span>XP Toevoegen & Logboek</span></div>
-        <div class="grid-2" style="margin-bottom:8px;">
-          <input type="number" id="addXpAmount" placeholder="Aantal XP (bijv. 45000)" />
-          <input type="text" id="addXpReason" placeholder="Reden (bijv. Sessie Immersea)" />
+        <div class="grid-2" style="margin-bottom:6px;">
+          <input type="number" id="addXpAmount" placeholder="Aantal XP" />
+          <input type="text" id="addXpReason" placeholder="Reden..." />
         </div>
-        <button class="btn" style="width:100%; margin-bottom:12px;" onclick="addXPEntry()">+ XP Bijschrijven</button>
+        <button class="btn" style="width:100%; margin-bottom:8px;" onclick="addXPEntry()">+ XP Bijschrijven</button>
         <div id="xpLogList"></div>
       </div>
     </section>
@@ -622,11 +657,11 @@
           <span>Uitrusting & Buit</span>
           <span class="badge" id="totalWeightBadge">0 lbs</span>
         </div>
-        <div class="grid-3" style="margin-bottom:8px;">
-          <input type="text" id="itemName" placeholder="Voorwerp (bijv. Sword of the Dales)" style="grid-column: span 2;" />
+        <div class="grid-3" style="margin-bottom:6px;">
+          <input type="text" id="itemName" placeholder="Voorwerp..." style="grid-column: span 2;" />
           <input type="number" id="itemWeight" placeholder="Gewicht (lbs)" step="0.1" />
         </div>
-        <div class="grid-2" style="margin-bottom:10px;">
+        <div class="grid-2" style="margin-bottom:8px;">
           <input type="number" id="itemQty" value="1" min="1" placeholder="Aantal" />
           <button class="btn" onclick="addItem()">+ Toevoegen</button>
         </div>
@@ -638,14 +673,14 @@
     <section id="tab-world" class="tab-panel">
       <div class="card">
         <div class="card-title"><span>Personen & Locaties Vastleggen</span></div>
-        <div class="grid-2" style="margin-bottom:8px;">
+        <div class="grid-2" style="margin-bottom:6px;">
           <select id="worldType">
             <option value="NPC">👤 Persoon / God (NPC)</option>
             <option value="Plaats">🏰 Bezochte Plaats</option>
           </select>
           <input type="text" id="worldName" placeholder="Naam..." />
         </div>
-        <input type="text" id="worldNote" placeholder="Notitie (bijv. Leider van Daggerdale...)" style="margin-bottom:8px;" />
+        <input type="text" id="worldNote" placeholder="Notitie..." style="margin-bottom:6px;" />
         <button class="btn" style="width:100%;" onclick="addWorldEntry()">+ Opslaan in Kroniek</button>
       </div>
 
@@ -659,7 +694,7 @@
           <button class="filter-pill" onclick="setWorldFilter('NPC', this)">Personen</button>
           <button class="filter-pill" onclick="setWorldFilter('Plaats', this)">Plaatsen</button>
         </div>
-        <input type="text" id="worldSearch" oninput="renderWorld()" placeholder="🔍 Zoek op naam of notitie..." style="margin-bottom:10px;" />
+        <input type="text" id="worldSearch" oninput="renderWorld()" placeholder="🔍 Zoek op naam of notitie..." style="margin-bottom:8px;" />
         <div id="worldList"></div>
       </div>
     </section>
@@ -671,8 +706,8 @@
           <span>Verslagen Monsters</span>
           <span class="badge" id="totalKillsBadge">0 verslagen</span>
         </div>
-        <div class="grid-3" style="margin-bottom:8px;">
-          <input type="text" id="monsterName" placeholder="Monster (bijv. Aboleth)" style="grid-column: span 2;" />
+        <div class="grid-3" style="margin-bottom:6px;">
+          <input type="text" id="monsterName" placeholder="Monster..." style="grid-column: span 2;" />
           <input type="number" id="monsterXp" placeholder="XP waarde" />
         </div>
         <button class="btn btn-crimson" style="width:100%;" onclick="addMonster()">+ Monster Registreren</button>
@@ -680,7 +715,6 @@
 
       <div class="card">
         <div class="card-title"><span>Dodenlijst</span></div>
-        <p style="font-size:0.85rem; color:var(--ink-muted); margin-top:0;">Tip: Klik op <strong>+1</strong> om een extra verslagen exemplaar te tellen (en optioneel direct XP op te tellen).</p>
         <div id="killList"></div>
       </div>
     </section>
@@ -690,12 +724,12 @@
       <div class="card">
         <div class="card-title"><span>Dobbelsteen Beker</span></div>
         <div class="dice-result-box">
-          <div style="font-size:0.85rem; color:var(--ink-muted);" id="diceFormulaDisplay">Kies een dobbelsteen</div>
+          <div style="font-size:0.82rem; color:var(--ink-muted);" id="diceFormulaDisplay">Kies een dobbelsteen</div>
           <div class="dice-total" id="diceTotalDisplay">—</div>
-          <div style="font-size:0.9rem; font-style:italic;" id="diceBreakdownDisplay"></div>
+          <div style="font-size:0.85rem; font-style:italic;" id="diceBreakdownDisplay"></div>
         </div>
 
-        <div class="grid-2" style="margin-bottom:12px;">
+        <div class="grid-2" style="margin-bottom:10px;">
           <div>
             <label>Aantal stenen</label>
             <input type="number" id="diceCount" value="1" min="1" max="30" />
@@ -753,6 +787,18 @@
     </button>
   </nav>
 
+  <!-- Edit Modal voor Items, Wereld, Monsters & XP -->
+  <div class="modal-backdrop" id="editModal">
+    <div class="modal-content">
+      <div class="card-title">
+        <span id="editModalTitle">Aanpassen</span>
+        <button class="btn btn-small" onclick="closeEditModal()">Annuleer</button>
+      </div>
+      <div id="editModalBody" style="margin-bottom:10px;"></div>
+      <button class="btn btn-crimson" style="width:100%;" onclick="saveEditModal()">💾 Wijzigingen Opslaan</button>
+    </div>
+  </div>
+
   <!-- Data & Backup Modal -->
   <div class="modal-backdrop" id="dataModal">
     <div class="modal-content">
@@ -760,13 +806,13 @@
         <span>Kroniek Opslag & Backup</span>
         <button class="btn btn-small" onclick="toggleModal(false)">Sluiten</button>
       </div>
-      <p style="font-size:0.95rem;">Je gegevens worden automatisch lokaal op je telefoon opgeslagen. Maak hier een back-up of herstel de standaard campagne-data:</p>
-      <div class="grid-2" style="margin-bottom:10px;">
+      <p style="font-size:0.9rem; margin-top:0;">Alles wordt automatisch lokaal op je telefoon opgeslagen. Maak een backup of zet alles terug naar de standaard blog-data:</p>
+      <div class="grid-2" style="margin-bottom:8px;">
         <button class="btn" onclick="exportData()">📋 Kopieer Backup</button>
         <button class="btn btn-crimson" onclick="importData()">📥 Herstel Backup</button>
       </div>
       <textarea id="backupArea" rows="4" placeholder="Plak hier je backup-tekst om te herstellen..."></textarea>
-      <button class="btn btn-small" style="width:100%; margin-top:10px;" onclick="resetToBlogData()">🔄 Herlaad Forgotten Realms Blog Data</button>
+      <button class="btn btn-small" style="width:100%; margin-top:8px;" onclick="resetToBlogData()">🔄 Herlaad Forgotten Realms Blog Data</button>
     </div>
   </div>
 
@@ -871,11 +917,18 @@
       diceHistory: []
     };
 
-    let state = JSON.parse(localStorage.getItem('add_kroniek_fr_data')) || JSON.parse(JSON.stringify(defaultData));
+    let state = JSON.parse(localStorage.getItem('add_kroniek_fr_v3')) || JSON.parse(JSON.stringify(defaultData));
     let currentWorldFilter = 'ALL';
+    let activeEditContext = null;
 
     function persist() {
-      localStorage.setItem('add_kroniek_fr_data', JSON.stringify(state));
+      localStorage.setItem('add_kroniek_fr_v3', JSON.stringify(state));
+    }
+
+    function escapeHtml(str) {
+      return String(str ?? '').replace(/[&<>"']/g, m => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[m]));
     }
 
     function switchTab(tabId, btnEl) {
@@ -885,11 +938,11 @@
       btnEl.classList.add('active');
     }
 
+    // Karakter
     function renderChar() {
       const c = state.char;
       document.getElementById('headerCharName').textContent = c.name || "AD&D Kroniek";
       document.getElementById('headerCharSub').textContent = `${c.race} ${c.charClass} • Niveau ${c.level}`;
-      document.getElementById('charAlignmentBadge').textContent = c.alignment;
 
       document.getElementById('charName').value = c.name;
       document.getElementById('charRace').value = c.race;
@@ -937,6 +990,7 @@
       renderChar();
     }
 
+    // XP & Level Up
     function renderXP() {
       const xp = state.xp;
       const lvl = state.char.level;
@@ -955,9 +1009,12 @@
       logEl.innerHTML = xp.log.map((entry, idx) => `
         <div class="list-item">
           <div>
-            <strong>+${entry.amount.toLocaleString('nl-NL')} XP</strong> — ${entry.reason}
+            <strong>+${Number(entry.amount).toLocaleString('nl-NL')} XP</strong> — ${escapeHtml(entry.reason)}
           </div>
-          <button class="btn btn-small btn-crimson" onclick="removeXPLog(${idx})">✕</button>
+          <div class="item-actions">
+            <button class="btn btn-small" onclick="openEditModal('xp', ${idx})">✎</button>
+            <button class="btn btn-small btn-crimson" onclick="removeXPLog(${idx})">✕</button>
+          </div>
         </div>
       `).join('');
     }
@@ -1001,6 +1058,7 @@
       alert(`Gefeliciteerd! ${state.char.name} is nu Niveau ${state.char.level}!`);
     }
 
+    // Inventaris
     function renderInventory() {
       const c = state.coins;
       ['pp','gp','ep','sp','cp'].forEach(k => {
@@ -1017,10 +1075,13 @@
         return `
           <div class="list-item">
             <div>
-              <strong>${item.qty}x ${item.name}</strong>
-              <div style="font-size:0.85rem; color:var(--ink-muted);">${w.toFixed(1)} lbs totaal</div>
+              <strong>${item.qty}x ${escapeHtml(item.name)}</strong>
+              <div style="font-size:0.82rem; color:var(--ink-muted);">${w.toFixed(1)} lbs totaal (${item.weight} lbs/st)</div>
             </div>
-            <button class="btn btn-small btn-crimson" onclick="removeItem(${idx})">✕</button>
+            <div class="item-actions">
+              <button class="btn btn-small" onclick="openEditModal('inv', ${idx})">✎</button>
+              <button class="btn btn-small btn-crimson" onclick="removeItem(${idx})">✕</button>
+            </div>
           </div>
         `;
       }).join('');
@@ -1054,6 +1115,7 @@
       renderInventory();
     }
 
+    // Wereld (NPC's & Plaatsen)
     function setWorldFilter(type, btnEl) {
       currentWorldFilter = type;
       document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
@@ -1072,10 +1134,13 @@
       document.getElementById('worldList').innerHTML = filtered.map(item => `
         <div class="list-item">
           <div>
-            <span class="badge">${item.type}</span> <strong>${item.name}</strong>
-            <div style="font-size:0.92rem; color:var(--ink-muted); margin-top:2px;">${item.note}</div>
+            <span class="badge">${escapeHtml(item.type)}</span> <strong>${escapeHtml(item.name)}</strong>
+            <div style="font-size:0.88rem; color:var(--ink-muted); margin-top:2px;">${escapeHtml(item.note)}</div>
           </div>
-          <button class="btn btn-small btn-crimson" onclick="removeWorld(${item.idx})">✕</button>
+          <div class="item-actions">
+            <button class="btn btn-small" onclick="openEditModal('world', ${item.idx})">✎</button>
+            <button class="btn btn-small btn-crimson" onclick="removeWorld(${item.idx})">✕</button>
+          </div>
         </div>
       `).join('');
     }
@@ -1098,18 +1163,20 @@
       renderWorld();
     }
 
+    // Monster Dodenlijst
     function renderKills() {
       let total = 0;
       document.getElementById('killList').innerHTML = state.kills.map((m, idx) => {
-        total += m.count;
+        total += Number(m.count) || 0;
         return `
           <div class="list-item">
             <div>
-              <strong>${m.name}</strong> <span class="badge">${m.count}x</span>
-              <div style="font-size:0.85rem; color:var(--ink-muted);">${m.xp} XP per stuk</div>
+              <strong>${escapeHtml(m.name)}</strong> <span class="badge">${m.count}x</span>
+              <div style="font-size:0.82rem; color:var(--ink-muted);">${m.xp} XP per stuk</div>
             </div>
-            <div style="display:flex; gap:6px;">
+            <div class="item-actions">
               <button class="btn btn-small" onclick="incrementKill(${idx})">+1</button>
+              <button class="btn btn-small" onclick="openEditModal('kill', ${idx})">✎</button>
               <button class="btn btn-small btn-crimson" onclick="removeKill(${idx})">✕</button>
             </div>
           </div>
@@ -1152,6 +1219,103 @@
       renderKills();
     }
 
+    // Universele Edit Modal voor alle lijsten
+    function openEditModal(category, idx) {
+      activeEditContext = { category, idx };
+      const body = document.getElementById('editModalBody');
+      const title = document.getElementById('editModalTitle');
+
+      if (category === 'inv') {
+        const item = state.inventory[idx];
+        title.textContent = "Voorwerp Aanpassen";
+        body.innerHTML = `
+          <div style="margin-bottom:8px;"><label>Naam</label><input type="text" id="editField1" value="${escapeHtml(item.name)}" /></div>
+          <div class="grid-2">
+            <div><label>Aantal</label><input type="number" id="editField2" value="${item.qty}" /></div>
+            <div><label>Gewicht per stuk (lbs)</label><input type="number" step="0.1" id="editField3" value="${item.weight}" /></div>
+          </div>
+        `;
+      } else if (category === 'world') {
+        const item = state.world[idx];
+        title.textContent = "Persoon / Plaats Aanpassen";
+        body.innerHTML = `
+          <div class="grid-2" style="margin-bottom:8px;">
+            <div>
+              <label>Type</label>
+              <select id="editField1">
+                <option value="NPC" ${item.type === 'NPC' ? 'selected' : ''}>👤 Persoon / God (NPC)</option>
+                <option value="Plaats" ${item.type === 'Plaats' ? 'selected' : ''}>🏰 Bezochte Plaats</option>
+              </select>
+            </div>
+            <div><label>Naam</label><input type="text" id="editField2" value="${escapeHtml(item.name)}" /></div>
+          </div>
+          <div><label>Notitie</label><textarea id="editField3" rows="3">${escapeHtml(item.note)}</textarea></div>
+        `;
+      } else if (category === 'kill') {
+        const item = state.kills[idx];
+        title.textContent = "Monster Aanpassen";
+        body.innerHTML = `
+          <div style="margin-bottom:8px;"><label>Naam Monster</label><input type="text" id="editField1" value="${escapeHtml(item.name)}" /></div>
+          <div class="grid-2">
+            <div><label>Aantal verslagen</label><input type="number" id="editField2" value="${item.count}" /></div>
+            <div><label>XP per stuk</label><input type="number" id="editField3" value="${item.xp}" /></div>
+          </div>
+        `;
+      } else if (category === 'xp') {
+        const item = state.xp.log[idx];
+        title.textContent = "XP Logboek Aanpassen";
+        body.innerHTML = `
+          <div style="margin-bottom:8px;"><label>Aantal XP</label><input type="number" id="editField1" value="${item.amount}" /></div>
+          <div><label>Omschrijving</label><input type="text" id="editField2" value="${escapeHtml(item.reason)}" /></div>
+        `;
+      }
+
+      document.getElementById('editModal').classList.add('open');
+    }
+
+    function closeEditModal() {
+      document.getElementById('editModal').classList.remove('open');
+      activeEditContext = null;
+    }
+
+    function saveEditModal() {
+      if (!activeEditContext) return;
+      const { category, idx } = activeEditContext;
+
+      if (category === 'inv') {
+        state.inventory[idx] = {
+          name: document.getElementById('editField1').value.trim() || "Voorwerp",
+          qty: Number(document.getElementById('editField2').value) || 1,
+          weight: Number(document.getElementById('editField3').value) || 0
+        };
+        renderInventory();
+      } else if (category === 'world') {
+        state.world[idx] = {
+          type: document.getElementById('editField1').value,
+          name: document.getElementById('editField2').value.trim() || "Naam",
+          note: document.getElementById('editField3').value.trim()
+        };
+        renderWorld();
+      } else if (category === 'kill') {
+        state.kills[idx] = {
+          name: document.getElementById('editField1').value.trim() || "Monster",
+          count: Number(document.getElementById('editField2').value) || 0,
+          xp: Number(document.getElementById('editField3').value) || 0
+        };
+        renderKills();
+      } else if (category === 'xp') {
+        state.xp.log[idx] = {
+          amount: Number(document.getElementById('editField1').value) || 0,
+          reason: document.getElementById('editField2').value.trim() || "Avontuur"
+        };
+        renderXP();
+      }
+
+      persist();
+      closeEditModal();
+    }
+
+    // Dobbelstenen
     function rollDice(sides) {
       const count = Math.max(1, Number(document.getElementById('diceCount').value) || 1);
       const mod = Number(document.getElementById('diceMod').value) || 0;
@@ -1192,12 +1356,13 @@
     function renderDiceHistory() {
       document.getElementById('diceHistory').innerHTML = state.diceHistory.map(h => `
         <div class="list-item">
-          <span><strong>${h.formula}</strong> <span style="color:var(--ink-muted); font-size:0.9rem;">${h.breakdown}</span></span>
-          <strong style="color:var(--crimson); font-size:1.1rem;">${h.total}</strong>
+          <span><strong>${escapeHtml(h.formula)}</strong> <span style="color:var(--ink-muted); font-size:0.85rem;">${escapeHtml(h.breakdown)}</span></span>
+          <strong style="color:var(--crimson); font-size:1.05rem;">${h.total}</strong>
         </div>
       `).join('');
     }
 
+    // Backup Modal
     function toggleModal(open) {
       document.getElementById('dataModal').classList.toggle('open', open);
     }
