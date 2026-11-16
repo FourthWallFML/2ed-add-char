@@ -1,5 +1,14 @@
-const CACHE_NAME = 'add-kroniek-v3';
-const ASSETS = ['./', './index.html', './manifest.json', './bg.jpg', './icon-192.png', './icon-512.png'];
+const CACHE_NAME = 'add-2e-kroniek-v4';
+const ASSETS = [
+  './',
+  './index.html',
+  './manifest.json',
+  './bg.jpg',
+  './parchment-card.jpg',
+  './leather-tex.jpg',
+  './icon-192.png',
+  './icon-512.png'
+];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
