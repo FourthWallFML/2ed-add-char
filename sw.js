@@ -1,9 +1,10 @@
-const CACHE_NAME = 'add-2e-kroniek-v4';
+const CACHE_NAME = 'add-2e-chronicle-v5';
 const ASSETS = [
   './',
   './index.html',
   './manifest.json',
-  './bg.jpg',
+  './banner.jpg',
+  './frame-bg.jpg',
   './parchment-card.jpg',
   './leather-tex.jpg',
   './icon-192.png',
