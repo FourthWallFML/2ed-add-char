@@ -1,10 +1,10 @@
 {
-  "name": "AD&D 2e Kroniek",
-  "short_name": "AD&D",
+  "name": "AD&D 2e Chronicle",
+  "short_name": "AD&D 2e",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#23170f",
-  "theme_color": "#23170f",
+  "background_color": "#1e130c",
+  "theme_color": "#1e130c",
   "orientation": "portrait-primary",
   "icons": [
     {
