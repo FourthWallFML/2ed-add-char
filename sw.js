@@ -1,4 +1,4 @@
-const CACHE_NAME = 'adnd2e-folio-cache-v2';
+const CACHE_NAME = 'adnd2e-folio-cache-v4';
 const FONT_CACHE_NAME = 'adnd2e-folio-fonts-v2';
 
 const OPTIONAL_PRECACHE_URLS = [
@@ -7,10 +7,9 @@ const OPTIONAL_PRECACHE_URLS = [
   './manifest.json',
   './icon-192.png',
   './icon-512.png',
-  './assets/aistudio/bg_c839d0a0.jpg',
+  './assets/aistudio/adnd-banner.jpg',
   './assets/aistudio/icon-192_5a24d5d7.png',
   './assets/aistudio/icon-512_7f7c8197.png',
-  './assets/aistudio/leather-tex_9003cacb.jpg',
   './assets/aistudio/parchment-card_d48fea00.jpg',
 ];
 
