@@ -1,10 +1,12 @@
-const CACHE_NAME = 'adnd2e-folio-cache-v1';
-const FONT_CACHE_NAME = 'adnd2e-folio-fonts-v1';
+const CACHE_NAME = 'adnd2e-folio-cache-v2';
+const FONT_CACHE_NAME = 'adnd2e-folio-fonts-v2';
 
-const PRECACHE_URLS = [
+const OPTIONAL_PRECACHE_URLS = [
   './',
   './index.html',
   './manifest.json',
+  './icon-192.png',
+  './icon-512.png',
   './assets/aistudio/bg_c839d0a0.jpg',
   './assets/aistudio/icon-192_5a24d5d7.png',
   './assets/aistudio/icon-512_7f7c8197.png',
@@ -16,7 +18,15 @@ self.addEventListener('install', (event) => {
   event.waitUntil(
     caches
       .open(CACHE_NAME)
-      .then((cache) => cache.addAll(PRECACHE_URLS).catch(() => undefined))
+      .then((cache) =>
+        Promise.allSettled(
+          OPTIONAL_PRECACHE_URLS.map((url) =>
+            fetch(url)
+              .then((res) => (res.ok ? cache.put(url, res) : undefined))
+              .catch(() => undefined)
+          )
+        )
+      )
       .then(() => self.skipWaiting())
   );
 });
@@ -43,6 +53,16 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(request.url);
   if (url.protocol !== 'http:' && url.protocol !== 'https:') return;
 
+  // Never intercept Vite dev modules or dynamic standalone export template requests
+  if (
+    url.pathname.startsWith('/src/') ||
+    url.pathname.startsWith('/@') ||
+    url.pathname.startsWith('/node_modules/') ||
+    url.pathname.endsWith('/standalone-app.html')
+  ) {
+    return;
+  }
+
   // Cache-first for Google Fonts stylesheets and font files
   if (
     url.hostname === 'fonts.googleapis.com' ||
@@ -66,8 +86,8 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Network-first for HTML navigation with cached offline fallback
-  if (request.mode === 'navigate') {
+  // Network-first for same-origin app shell and assets (fresh when online, works offline)
+  if (url.origin === self.location.origin) {
     event.respondWith(
       fetch(request)
         .then((response) => {
@@ -78,28 +98,14 @@ self.addEventListener('fetch', (event) => {
           return response;
         })
         .catch(() =>
-          caches.match(request).then((cached) => cached || caches.match('./index.html'))
+          caches.match(request).then((cached) => {
+            if (cached) return cached;
+            if (request.mode === 'navigate') {
+              return caches.match('./index.html') || caches.match('./');
+            }
+            return undefined;
+          })
         )
-    );
-    return;
-  }
-
-  // Stale-while-revalidate for same-origin static assets (JS, CSS, images)
-  if (url.origin === self.location.origin) {
-    event.respondWith(
-      caches.open(CACHE_NAME).then((cache) =>
-        cache.match(request).then((cached) => {
-          const networkFetch = fetch(request)
-            .then((response) => {
-              if (response && response.ok) {
-                cache.put(request, response.clone());
-              }
-              return response;
-            })
-            .catch(() => cached);
-          return cached || networkFetch;
-        })
-      )
     );
   }
 });
